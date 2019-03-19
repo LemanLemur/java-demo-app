@@ -9,7 +9,7 @@ public class HelloWorldEndPoint {
 
     @RequestMapping(method = RequestMethod.GET, path = "/hello")
     String hello(){
-        return "Hello World!";
+        return "Hello Heroku World!";
     }
 
 }
