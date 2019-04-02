@@ -1,6 +1,8 @@
 package pl.leman.demoapp;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.leman.demoapp.domain.ProductFacade;
 import pl.leman.demoapp.domain.ProductRequestDto;
@@ -18,38 +20,38 @@ class ProductEndpoint {
     }
 
     @GetMapping("/{id}")
-    ProductResponseDto getProduct(@PathVariable("id") String id) {
+    ResponseEntity getProduct(@PathVariable("id") String id) {
         try {
-            return productFacade.findById(id);
+            return new ResponseEntity<>(productFacade.findById(id), HttpStatus.OK);
         } catch (NullPointerException e) {
-            throw e;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping
-    ProductResponseDto createProduct(@RequestBody ProductRequestDto productRequestDto) {
+    ResponseEntity createProduct(@RequestBody ProductRequestDto productRequestDto) {
         try {
-            return productFacade.create(productRequestDto);
+            return new ResponseEntity<>(productFacade.create(productRequestDto), HttpStatus.OK);
         } catch (NullPointerException e) {
-            throw e;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/{id}")
-    ProductResponseDto deleteProduct(@PathVariable("id") String id) {
+    ResponseEntity deleteProduct(@PathVariable("id") String id) {
         try {
-            return productFacade.delete(id);
+            return new ResponseEntity<>(productFacade.delete(id), HttpStatus.OK);
         } catch (NullPointerException e) {
-            throw e;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/{id}")
-    ProductResponseDto updateProduct(@PathVariable("id") String id, ProductRequestDto productRequestDto) {
+    ResponseEntity updateProduct(@PathVariable("id") String id, ProductRequestDto productRequestDto) {
         try {
-            return productFacade.update(id, productRequestDto);
+            return new ResponseEntity<>(productFacade.update(id, productRequestDto), HttpStatus.OK);
         } catch (NullPointerException e) {
-            throw e;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 

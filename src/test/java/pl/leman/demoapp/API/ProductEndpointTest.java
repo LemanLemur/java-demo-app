@@ -37,17 +37,15 @@ public class ProductEndpointTest extends DemoappApplicationTests {
     }
 
     @Test
-    public void shouldNotGetExistingProduct() {
-        //TODO naprawić => status 500
+    public void shouldGetNotExistingProduct() {
         //given
-        final String url = "http://localhost:" + port + "/products/cos";
+        final String url = "http://localhost:" + port + "/products/" + "cos";
 
         //when
         ResponseEntity<ProductResponseDto> result = httpClient.getForEntity(url, ProductResponseDto.class);
 
         //then
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
-        assertThat(result.getBody().getId()).isNullOrEmpty();
+        assertThat(result.getStatusCodeValue()).isEqualTo(404);
     }
 
     @Test
@@ -75,7 +73,8 @@ public class ProductEndpointTest extends DemoappApplicationTests {
         final String url = "http://localhost:" + port + "/products/" + createdProduct1.getId();
 
         //when
-        ResponseEntity<ProductResponseDto> result = httpClient.exchange(url, HttpMethod.DELETE, null, ProductResponseDto.class);
+        httpClient.delete(url);
+        ResponseEntity<ProductResponseDto> result = httpClient.getForEntity(url, ProductResponseDto.class);
 
         //then
         assertThat(result.getStatusCodeValue()).isEqualTo(200);
@@ -96,7 +95,7 @@ public class ProductEndpointTest extends DemoappApplicationTests {
 
         //then
         assertThat(result.getStatusCodeValue()).isEqualTo(200);
-        assertThat(result.getBody().getName()).isEqualTo(product.getName());
+        assertThat(result.getBody().getName()).isEqualTo(createdProduct.getName());
     }
 
     String mapToJson(ProductRequestDto productRequestDto) {
