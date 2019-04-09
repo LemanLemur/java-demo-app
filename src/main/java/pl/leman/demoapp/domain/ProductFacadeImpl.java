@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import pl.leman.demoapp.infrastructure.ProductRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -19,6 +22,16 @@ class ProductFacadeImpl implements ProductFacade {
     public ProductResponseDto findById(String id){
         Product product = productRepository.findById(id);
         return new ProductResponseDto(product.getId(), product.getName());
+    }
+
+    @Override
+    public ProductListResponseDto findAll() {
+        Collection<Product> product = productRepository.findAll();
+        List<ProductResponseDto> productList = new ArrayList<>();
+        for(Product product1: product){
+            productList.add(new ProductResponseDto(product1.getId(), product1.getName()));
+        }
+        return new ProductListResponseDto(productList);
     }
 
     @Override

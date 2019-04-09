@@ -9,10 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import pl.leman.demoapp.DemoappApplicationTests;
-import pl.leman.demoapp.domain.Product;
-import pl.leman.demoapp.domain.ProductFacade;
-import pl.leman.demoapp.domain.ProductRequestDto;
-import pl.leman.demoapp.domain.ProductResponseDto;
+import pl.leman.demoapp.domain.*;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -34,6 +31,27 @@ public class ProductEndpointTest extends DemoappApplicationTests {
         //then
         assertThat(result.getStatusCodeValue()).isEqualTo(200);
         assertThat(result.getBody()).isEqualToComparingFieldByField(createdProduct);
+    }
+
+    @Test
+    public void shouldGetExistingProducts() {
+        //given
+        ProductRequestDto productRequestDto = new ProductRequestDto("product");
+        ProductResponseDto createdProduct = productFacade.create(productRequestDto);
+        ProductRequestDto productRequestDto2 = new ProductRequestDto("product1");
+        ProductResponseDto createdProduct2 = productFacade.create(productRequestDto2);
+        final String url = "http://localhost:" + port + "/products/";
+
+        //when
+        ResponseEntity<ProductListResponseDto> result = httpClient.getForEntity(url, ProductListResponseDto.class);
+
+        //then
+        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getBody().getProducts().stream()
+                .filter(productResponseDto -> productResponseDto.getId().equals(createdProduct2.getId()))).isNotEmpty();
+        assertThat(result.getBody().getProducts().stream()
+                .filter(productResponseDto -> productResponseDto.getId().equals(createdProduct.getId()))).isNotEmpty();
+        assertThat(result.getBody().getProducts().size()).isEqualTo(2);
     }
 
     @Test

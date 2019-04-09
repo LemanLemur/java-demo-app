@@ -5,17 +5,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.leman.demoapp.domain.ProductFacade;
+import pl.leman.demoapp.domain.ProductListResponseDto;
 import pl.leman.demoapp.domain.ProductRequestDto;
-import pl.leman.demoapp.domain.ProductResponseDto;
 
 @RestController
 @RequestMapping("/products")
-class ProductEndpoint {
+class ProductEndPoint {
 
     private final ProductFacade productFacade;
 
     @Autowired
-    ProductEndpoint(ProductFacade productFacade) {
+    ProductEndPoint(ProductFacade productFacade) {
         this.productFacade = productFacade;
     }
 
@@ -50,6 +50,15 @@ class ProductEndpoint {
     ResponseEntity updateProduct(@PathVariable("id") String id, ProductRequestDto productRequestDto) {
         try {
             return new ResponseEntity<>(productFacade.update(id, productRequestDto), HttpStatus.OK);
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping
+    ResponseEntity getProducts() {
+        try {
+            return new ResponseEntity<>(productFacade.findAll(), HttpStatus.OK);
         } catch (NullPointerException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

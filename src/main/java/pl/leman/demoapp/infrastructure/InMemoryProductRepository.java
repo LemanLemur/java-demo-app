@@ -3,6 +3,7 @@ package pl.leman.demoapp.infrastructure;
 import org.springframework.stereotype.Repository;
 import pl.leman.demoapp.domain.Product;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,11 @@ class InMemoryProductRepository implements ProductRepository {
     @Override
     public Product findById(String id) {
         return products.get(id);
+    }
+
+    @Override
+    public Collection<Product> findAll() {
+        return products.values();
     }
 
     @Override
