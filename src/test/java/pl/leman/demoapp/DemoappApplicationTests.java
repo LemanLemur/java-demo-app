@@ -1,5 +1,6 @@
 package pl.leman.demoapp;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,26 +13,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DemoappApplicationTests {
+public abstract class DemoappApplicationTests {
 
 	@LocalServerPort
-	int port;
+	protected int port;
 
 	@Autowired
-	TestRestTemplate httpClient;
+	protected TestRestTemplate httpClient;
 
-	@Test
-	public void shouldReturnGreetings() {
-		//given
-		final String url = "http://localhost:" + port + "/hello";
-
-		//when
-		ResponseEntity<String> response = httpClient.getForEntity(url, String.class);
-
-		//then
-		Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(200);
-		Assertions.assertThat(response.getBody()).isEqualTo("Hello Heroku World!");
-
-	}
+	@Autowired
+	protected ObjectMapper objectMapper;
 
 }
