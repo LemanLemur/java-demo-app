@@ -21,7 +21,7 @@ public class ProductEndpointTest extends DemoappApplicationTests {
     @Test
     public void shouldGetExistingProduct() {
         //given
-        ProductRequestDto productRequestDto = new ProductRequestDto("product");
+        ProductRequestDto productRequestDto = new ProductRequestDto("product", "10.0", "PLN", "po.pl", "hot");
         ProductResponseDto createdProduct = productFacade.create(productRequestDto);
         final String url = "http://localhost:" + port + "/products/" + createdProduct.getId();
 
@@ -36,9 +36,9 @@ public class ProductEndpointTest extends DemoappApplicationTests {
     @Test
     public void shouldGetExistingProducts() {
         //given
-        ProductRequestDto productRequestDto = new ProductRequestDto("product");
+        ProductRequestDto productRequestDto = new ProductRequestDto("product", "10.0", "PLN", "po.pl", "hot");
         ProductResponseDto createdProduct = productFacade.create(productRequestDto);
-        ProductRequestDto productRequestDto2 = new ProductRequestDto("product1");
+        ProductRequestDto productRequestDto2 = new ProductRequestDto("product1", "10.0", "PLN", "po.pl", "hot");
         ProductResponseDto createdProduct2 = productFacade.create(productRequestDto2);
         final String url = "http://localhost:" + port + "/products/";
 
@@ -70,7 +70,7 @@ public class ProductEndpointTest extends DemoappApplicationTests {
     public void shouldCreateProduct() {
         //given
         final String url = "http://localhost:" + port + "/products";
-        final ProductRequestDto product = new ProductRequestDto("cos");
+        final ProductRequestDto product = new ProductRequestDto("cos", "10.0", "PLN", "ho.pl", "hot");
         String productJson = mapToJson(product);
         //when
         ResponseEntity<ProductResponseDto> result = httpClient.postForEntity(url, getHttpRequest(productJson), ProductResponseDto.class);
@@ -84,9 +84,9 @@ public class ProductEndpointTest extends DemoappApplicationTests {
     @Test
     public void shouldDeleteProduct() {
         //given
-        ProductRequestDto productRequestDto = new ProductRequestDto("product");
+        ProductRequestDto productRequestDto = new ProductRequestDto("product", "10.0", "PLN", "po.pl", "hot");
         ProductResponseDto createdProduct = productFacade.create(productRequestDto);
-        ProductRequestDto productRequestDto1 = new ProductRequestDto("product1");
+        ProductRequestDto productRequestDto1 = new ProductRequestDto("product1", "10.0", "PLN", "po.pl", "hot");
         ProductResponseDto createdProduct1 = productFacade.create(productRequestDto1);
         final String url = "http://localhost:" + port + "/products/" + createdProduct1.getId();
 
@@ -102,9 +102,9 @@ public class ProductEndpointTest extends DemoappApplicationTests {
     @Test
     public void shouldUpdateProduct() {
         //given
-        ProductRequestDto productRequestDto = new ProductRequestDto("product");
+        ProductRequestDto productRequestDto = new ProductRequestDto("product", "10.0", "PLN", "po.pl", "hot");
         ProductResponseDto createdProduct = productFacade.create(productRequestDto);
-        ProductRequestDto product = new ProductRequestDto("cos");
+        ProductRequestDto product = new ProductRequestDto("cos", "10.0", "PLN", "po.pl", "hot");
         String productJson = mapToJson(product);
         final String url = "http://localhost:" + port + "/products/" + createdProduct.getId();
 

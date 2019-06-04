@@ -21,7 +21,20 @@ class ProductFacadeImpl implements ProductFacade {
     @Override
     public ProductResponseDto findById(String id){
         Product product = productRepository.findById(id);
-        return new ProductResponseDto(product.getId(), product.getName());
+        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImage(), product.getTag());
+    }
+
+    @Override
+    public ProductListResponseDto findByTag(String tag) {
+        Collection<Product> product = productRepository.findAll();
+        List<ProductResponseDto> productList = new ArrayList<>();
+        for(Product product1: product){
+            if(product1.getTag().equals(tag)) {
+                productList.add(new ProductResponseDto(product1.getId(), product1.getName(), product1.getPrice(), product1.getImage(),
+                        product1.getTag()));
+            }
+        }
+        return new ProductListResponseDto(productList);
     }
 
     @Override
@@ -29,7 +42,8 @@ class ProductFacadeImpl implements ProductFacade {
         Collection<Product> product = productRepository.findAll();
         List<ProductResponseDto> productList = new ArrayList<>();
         for(Product product1: product){
-            productList.add(new ProductResponseDto(product1.getId(), product1.getName()));
+            productList.add(new ProductResponseDto(product1.getId(), product1.getName(), product1.getPrice(), product1.getImage(),
+                    product1.getTag()));
         }
         return new ProductListResponseDto(productList);
     }
@@ -44,7 +58,8 @@ class ProductFacadeImpl implements ProductFacade {
         //tworzenie
         String id = UUID.randomUUID().toString();
         LocalDateTime createdAt = LocalDateTime.now();
-        Product product = new Product(id, productRequest.getName(), createdAt);
+        Product product = new Product(id, productRequest.getName(), createdAt, productRequest.getPrice(), productRequest.getImage(),
+                productRequest.getTag());
 
         //zapis
         productRepository.save(product);
@@ -52,7 +67,10 @@ class ProductFacadeImpl implements ProductFacade {
         ///przemapowac na resppnse i zwrocic
         return new ProductResponseDto(
                 product.getId(),
-                product.getName()
+                product.getName(),
+                product.getPrice(),
+                product.getImage(),
+                product.getTag()
         );
 
     }
@@ -71,7 +89,10 @@ class ProductFacadeImpl implements ProductFacade {
         ///przemapowac na resppnse i zwrocic
         return new ProductResponseDto(
                 product.getId(),
-                product.getName()
+                product.getName(),
+                product.getPrice(),
+                product.getImage(),
+                product.getTag()
         );
     }
 
@@ -79,6 +100,6 @@ class ProductFacadeImpl implements ProductFacade {
     public ProductResponseDto delete(String id) {
         Product product = productRepository.delete(id);
 
-        return new ProductResponseDto(product.getId(), product.getName());
+        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImage(), product.getTag());
     }
 }

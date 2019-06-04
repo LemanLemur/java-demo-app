@@ -64,4 +64,13 @@ class ProductEndPoint {
         }
     }
 
+    @GetMapping("/tag/{tag}")
+    ResponseEntity getProductsByTag(@PathVariable("tag") String tag, ProductRequestDto productRequestDto) {
+        try {
+            return new ResponseEntity<>(productFacade.findByTag(tag), HttpStatus.OK);
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

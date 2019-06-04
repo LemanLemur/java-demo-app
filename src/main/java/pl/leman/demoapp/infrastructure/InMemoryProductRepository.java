@@ -2,7 +2,9 @@ package pl.leman.demoapp.infrastructure;
 
 import org.springframework.stereotype.Repository;
 import pl.leman.demoapp.domain.Product;
+import pl.leman.demoapp.domain.ProductResponseDto;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
